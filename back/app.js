@@ -3,19 +3,22 @@ const mongoose = require("mongoose");
 
 //const Sauce = require('./models/sauces');
 
+// Import de la route user
+const userRoutes = require("./routes/user");
+
+// Connexion à MongoDB
 mongoose
   .connect(
-    "mongodb+srv://ren-dnd:etn8sqrgBQqD@cluster0.9ifi9zx.mongodb.net/test?retryWrites=true&w=majority",
+    "mongodb+srv://db_username:db_password@cluster0.9ifi9zx.mongodb.net/piiquante?retryWrites=true&w=majority",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
+// Initialisation de l'application Express
 const app = express();
 
-app.use(express.json());
-  
-
+// Gestion des requêtes - CORS
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -26,40 +29,33 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
   next();
 });
 
+// Temporaire
+app.use((req, res, next) => {
+  console.log('Requête reçue !');
+  next();
+});
+app.use((req, res, next) => {
+  res.status(201);
+  next();
+});
+app.use((req, res, next) => {
+  res.json({ message: 'Votre requête a bien été reçue !' });
+  next();
+});
+app.use((req, res, next) => {
+  console.log('Réponse envoyée avec succès !');
+});
+// Fin de temporaire
+
+// Bodyparser
+app.use(express.json());
+
+
+app.use('/api/auth', userRoutes)
+
+// Export de l'appli
 module.exports = app;
-
-app.post("/api/stuff", (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: "Objet créé",
-  });
-});
-
-app.get("/api/stuff", (req, res, next) => {
-  const stuff = [
-    {
-    //   _id: "oeihfzeoi",
-    //   title: "Mon premier objet",
-    //   description: "Les infos de mon premier objet",
-    //   imageUrl:
-    //     "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-    //   price: 4900,
-    //   userId: "qsomihvqios",
-    },
-    {
-    //   _id: "oeihfzeomoihi",
-    //   title: "Mon deuxième objet",
-    //   description: "Les infos de mon deuxième objet",
-    //   imageUrl:
-    //     "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-    //   price: 2900,
-    //   userId: "qsomihvqios",
-    },
-  ];
-  res.status(200).json(stuff);
-});
-
-

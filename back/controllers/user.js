@@ -24,8 +24,32 @@ exports.signup = (req, res, next) => {
 
 // Connexion
 exports.login = (req, res, next) => {
-
-
-
-  
+  //Contrôle de l'utilisateur
+  User.findOne({ email: req.body.email })
+    .then((user) => {
+      if (!user) {
+        return res
+          .status(401)
+          .json({ message: "Identifiant ou mot de passe incorrect" });
+      }
+      //Contrôle de la paire login/password
+      bcrypt
+        .compare(req.body.password, user.password)
+        .then((valid) => {
+          if (!valid) {
+            return res
+              .status(401)
+              .json({ message: "Identifiant ou mot de passe incorrect" });
+          }
+          //Génération du token
+          res.status(200).json({
+            userId: user._id,
+            token: jwt.sign({ userId: user._id }, `'${process.env.TOKEN}'`, {
+              expiresIn: "24h",
+            }),
+          });
+        })
+        .catch((error) => res.status(500).json({ error }));
+    })
+    .catch((error) => res.status(500).json({ error }));
 };
