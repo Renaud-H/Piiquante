@@ -2,7 +2,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-// const
+const parseSalt = parseInt(process.env.SALT);
 
 // Inscription
 exports.signup = (req, res, next) => {

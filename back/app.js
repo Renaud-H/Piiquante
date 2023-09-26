@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 
 //const Sauce = require('./models/sauces');
 
-// Import de la route user
+// Import de la route sauce & user
+const sauceRoutes = require('./routes/sauce');
 const userRoutes = require("./routes/user");
 
 // Connexion à MongoDB
@@ -54,8 +55,10 @@ app.use((req, res, next) => {
 // Bodyparser
 app.use(express.json());
 
-
+// Configuration des routes
+app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes)
+
 
 // Export de l'appli
 module.exports = app;

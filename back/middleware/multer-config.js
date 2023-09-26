@@ -10,11 +10,11 @@ const MIME_TYPES = {
 
 //Stockage des images
 const storage = multer.diskStorage({
-  //Dossier de stockage
+  // Dossier de stockage
   destination: (req, file, callback) => {
     callback(null, 'images');
   },
-  //Renommage des fichiers
+  // Renommage des fichiers
   filename: (req, file, callback) => {
     const name = file.originalname.split(' ').join('_');
     const extension = MIME_TYPES[file.mimetype];
@@ -22,5 +22,5 @@ const storage = multer.diskStorage({
   }
 });
 
-//Export du middleware
+// Export du middleware
 module.exports = multer({storage: storage}).single('image');
