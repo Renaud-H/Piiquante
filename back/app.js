@@ -11,7 +11,7 @@ const userRoutes = require("./routes/user");
 mongoose
   .connect(
     "mongodb+srv://db_username:db_password@cluster0.9ifi9zx.mongodb.net/piiquante?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true } //process.env.[DB_info token]
+    { useNewUrlParser: true, useUnifiedTopology: true } // process.env.[DB_info]
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
@@ -34,23 +34,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Temporaire
-app.use((req, res, next) => {
-  console.log('Requête reçue !');
-  next();
-});
-app.use((req, res, next) => {
-  res.status(201);
-  next();
-});
-app.use((req, res, next) => {
-  res.json({ message: 'Votre requête a bien été reçue !' });
-  next();
-});
-app.use((req, res, next) => {
-  console.log('Réponse envoyée avec succès !');
-});
-// Fin de temporaire
 
 // Bodyparser
 app.use(express.json());
