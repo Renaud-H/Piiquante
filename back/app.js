@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require('path');
 
-//const Sauce = require('./models/sauces');
 
 // Import de la route sauce & user
 const sauceRoutes = require('./routes/sauce');
@@ -11,7 +11,7 @@ const userRoutes = require("./routes/user");
 mongoose
   .connect(
     "mongodb+srv://db_username:db_password@cluster0.9ifi9zx.mongodb.net/piiquante?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
+    { useNewUrlParser: true, useUnifiedTopology: true } //process.env.[DB_info token]
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
@@ -57,7 +57,8 @@ app.use(express.json());
 
 // Configuration des routes
 app.use('/api/sauces', sauceRoutes);
-app.use('/api/auth', userRoutes)
+app.use('/api/auth', userRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
 // Export de l'appli
