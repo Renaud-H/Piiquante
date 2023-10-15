@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require('path');
 
+//Variables d'env
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Import de la route sauce & user
 const sauceRoutes = require('./routes/sauce');
@@ -10,8 +13,8 @@ const userRoutes = require("./routes/user");
 // Connexion à MongoDB
 mongoose
   .connect(
-    "mongodb+srv://db_username:db_password@cluster0.9ifi9zx.mongodb.net/piiquante?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true } // process.env.[DB_info]
+    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
